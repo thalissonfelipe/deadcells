@@ -1,19 +1,17 @@
 # Dead Cells API
 
-Dead Cells is a game available on the Steam platform. I build this API using the Python Flask framework just to learn how to later consume this API using React.
+Dead Cells is a game available on the Steam platform. This API was created using the Python Flask framework just to learn how to consume it later using React.
+The data returned from the endpoints was collected on the [Dead Cells Wiki](https://deadcells.gamepedia.com/Dead_Cells_Wiki) page using the BeautifulSoup python library.
 
 ## Install dependencies
 
-    pip intall -r requirements.txt
+`pip intall -r requirements.txt`
 
 ## Run application
 
 `python main.py`
 
-
 ## Run tests
-
-Require nose, you should install it typing:
 
 `pip install -r dev-requirements.txt`
 
