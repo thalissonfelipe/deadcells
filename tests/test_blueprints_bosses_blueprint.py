@@ -39,7 +39,7 @@ class test_blueprint_get_bosses(unittest.TestCase):
         mock_current_app.scrapper_manager.insert.assert_called()
         self.assertEqual(ret.status_code, 200)
         self.assertEqual(ret.data.decode(), json.dumps(MOCK_BOSSES['data']))
-    
+
     @patch(
         'blueprints.bosses_blueprint.current_app',
         return_value=Mock()
