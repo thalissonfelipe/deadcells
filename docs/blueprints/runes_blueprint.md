@@ -20,16 +20,16 @@ Returns a list of json objects.
 ```json
 [
     {
-        'name': 'Vine Rune',
-        'image': 'path_to_image',
-        'biome': 'Promenade of the Condemned',
-        'location': 'In a room accessed by entering a door found at the base of a large overhang',
-        'enemy': 'Undead Archer',
-        'ability': 'Ability to sprout vines from special green blobs.',
-        'access': [
-            'Toxic Sewers',
-            'Ramparts',
-            'Dilapidated Arboretum (when paired with Teleportation Rune)'
+        "name": "Vine Rune",
+        "image": "path_to_image",
+        "biome": "Promenade of the Condemned",
+        "location": "In a room accessed by entering a door found at the base of a large overhang",
+        "enemy": "Undead Archer",
+        "ability": "Ability to sprout vines from special green blobs.",
+        "access": [
+            "Toxic Sewers",
+            "Ramparts",
+            "Dilapidated Arboretum (when paired with Teleportation Rune)"
         ]
     }
 ]
@@ -49,9 +49,9 @@ Internal Server Error.
 
 ```javascript
 $.ajax({
-    url: 'host:port/runes',
-    dataType: 'json',
-    type : 'GET',
+    url: "host:port/runes",
+    dataType: "json",
+    type : "GET",
     success : function(data) {
         console.log(data);
     }

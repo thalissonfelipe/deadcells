@@ -25,11 +25,11 @@ Returns a json object about a single achievement.
 
 ```json
 {
-    'image': 'path_to_image',
-    'name': 'Platinium',
-    'description': 'Unlock all trophies (PS4 only)',
-    'score': 'N/A',
-    'trophy': 'Platinium'
+    "image": "path_to_image",
+    "name": "Platinium",
+    "description": "Unlock all trophies (PS4 only)",
+    "score": "N/A",
+    "trophy": "Platinium"
 }
 ```
 
@@ -57,9 +57,9 @@ Internal Server Error.
 
 ```javascript
 $.ajax({
-    url: 'host:port/achievements/Platinium',
-    dataType: 'json',
-    type : 'GET',
+    url: "host:port/achievements/Platinium",
+    dataType: "json",
+    type : "GET",
     success : function(data) {
         console.log(data);
     }

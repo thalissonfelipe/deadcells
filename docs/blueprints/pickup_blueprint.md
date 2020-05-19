@@ -25,11 +25,11 @@ Returns a json object about a single pickup.
 
 ```json
 {
-    'name': 'Gold Tooth',
-    'image': 'path_to_image',
-    'description': 'A gold tooth worth (value) GOLD.',
-    'value_range': '35-65',
-    'sources': 'One per enemy parried with the Greed Shield.'
+    "name": "Gold Tooth",
+    "image": "path_to_image",
+    "description": "A gold tooth worth (value) GOLD.",
+    "value_range": "35-65",
+    "sources": "One per enemy parried with the Greed Shield."
 }
 ```
 
@@ -57,9 +57,9 @@ Internal Server Error.
 
 ```javascript
 $.ajax({
-    url: 'host:port/pickups/name/Gold Tooth',
-    dataType: 'json',
-    type : 'GET',
+    url: "host:port/pickups/name/Gold Tooth",
+    dataType: "json",
+    type : "GET",
     success : function(data) {
         console.log(data);
     }

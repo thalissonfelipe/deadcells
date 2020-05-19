@@ -25,9 +25,9 @@ Returns a json object about a single boss.
 
 ```json
 {
-    'name': 'The Concierge',
-    'location(s)': 'Black Bridge',
-    'reward': ['Challenger Rune (1st kill)'],
+    "name": "The Concierge",
+    "location(s)": "Black Bridge",
+    "reward": ["Challenger Rune (1st kill)"],
 }
 ```
 
@@ -55,9 +55,9 @@ Internal Server Error.
 
 ```javascript
 $.ajax({
-    url: 'host:port/bosses/The Concierge',
-    dataType: 'json',
-    type : 'GET',
+    url: "host:port/bosses/The Concierge",
+    dataType: "json",
+    type : "GET",
     success : function(data) {
         console.log(data);
     }

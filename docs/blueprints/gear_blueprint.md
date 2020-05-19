@@ -25,13 +25,13 @@ Returns a json object about a single gear.
 
 ```json
 {
-    'image': 'path_to_image',
-    'name': 'Rusty Sword',
-    'description': 'Kills things. Sometimes...',
-    'location': 'Starter melee weapon until Random Starter Melee Weapon is purchased (found in secret tile near the place where you start afterwards)',
-    'base_dps': '119 DPS',
-    'special_dps': 'N/A',
-    'scaling': 'path_to_image'
+    "image": "path_to_image",
+    "name": "Rusty Sword",
+    "description": "Kills things. Sometimes...",
+    "location": "Starter melee weapon until Random Starter Melee Weapon is purchased (found in secret tile near the place where you start afterwards)",
+    "base_dps": "119 DPS",
+    "special_dps": "N/A",
+    "scaling": "path_to_image"
 }
 ```
 
@@ -59,9 +59,9 @@ Internal Server Error.
 
 ```javascript
 $.ajax({
-    url: 'host:port/gears/name/Rusty Sword',
-    dataType: 'json',
-    type : 'GET',
+    url: "host:port/gears/name/Rusty Sword",
+    dataType: "json",
+    type : "GET",
     success : function(data) {
         console.log(data);
     }

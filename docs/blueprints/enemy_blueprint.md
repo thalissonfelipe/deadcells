@@ -25,17 +25,17 @@ Returns a json object about a single enemy.
 
 ```json
 {
-    'image': 'path_to_image',
-    'name': 'Zombie',
-    'zones': ['Prisoners\' Quarters'],
-    'offensive_abilities': ['Clawing attack'],
-    'deffensive_abilities': 'Hops backwards',
-    'elite': 'Yes',
-    'cell_drops': '1 (33%)',
-    'blueprint_drops': [
-        'Blood Sword (100%)',
-        'Double Crossb-o-matic (0.4%) ',
-        'Boeby Outfit (1+ BSC; 0.4%)'
+    "image": "path_to_image",
+    "name": "Zombie",
+    "zones": ["Prisoners' Quarters"],
+    "offensive_abilities": ["Clawing attack"],
+    "deffensive_abilities": "Hops backwards",
+    "elite": "Yes",
+    "cell_drops": "1 (33%)",
+    "blueprint_drops": [
+        "Blood Sword (100%)",
+        "Double Crossb-o-matic (0.4%) ",
+        "Boeby Outfit (1+ BSC; 0.4%)"
     ]
 }
 ```
@@ -64,9 +64,9 @@ Internal Server Error.
 
 ```javascript
 $.ajax({
-    url: 'host:port/enemies/Zombie',
-    dataType: 'json',
-    type : 'GET',
+    url: "host:port/enemies/Zombie",
+    dataType: "json",
+    type : "GET",
     success : function(data) {
         console.log(data);
     }

@@ -25,10 +25,10 @@ Returns a json object about a single npc.
 
 ```json
 {
-    'name': 'Tutorial Knight',
-    'info': 'Guides the player throughout the start of the game, ...',
-    'location': 'Prisoners\' Quarters',
-    'image': 'path_to_image'
+    "name": "Tutorial Knight",
+    "info": "Guides the player throughout the start of the game, ...",
+    "location": "Prisoners' Quarters",
+    "image": "path_to_image"
 }
 ```
 
@@ -56,9 +56,9 @@ Internal Server Error.
 
 ```javascript
 $.ajax({
-    url: 'host:port/Tutorial Knight',
-    dataType: 'json',
-    type : 'GET',
+    url: "host:port/Tutorial Knight",
+    dataType: "json",
+    type : "GET",
     success : function(data) {
         console.log(data);
     }
