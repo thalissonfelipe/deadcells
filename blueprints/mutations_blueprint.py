@@ -51,7 +51,7 @@ def get_mutation_by_name(name):
         name_exists = False
         data = current_app.scrapper_manager.get('mutations')
         if data is None:
-            data = current_app.scrapper_manager.get_achievements()
+            data = current_app.scrapper_manager.get_mutations()
             current_app.scrapper_manager.insert(data)
         for mutation_type in data['data']:
             for mutation in mutation_type['mutations']:
