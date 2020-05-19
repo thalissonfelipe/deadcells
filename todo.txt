@@ -1,5 +1,4 @@
 - Create mechanics route
 - Refactor json keys
 - Refactor json values (some keys are arrays and must be arrays)
-- Improve biomes route (too slow)
 - Implement authentication

@@ -1,5 +1,4 @@
 import json
-from scrapper import Scrapper
 from flask import Blueprint, Response, current_app
 
 
@@ -10,7 +9,11 @@ bp = Blueprint('biomes', __name__)
 def get_biomes():
     response = Response(response='OK', status=200)
     try:
-        response.data = json.dumps(Scrapper().get_biomes())
+        data = current_app.scrapper_manager.get('biomes')
+        if data is None:
+            data = current_app.scrapper_manager.get_biomes()
+            current_app.scrapper_manager.insert(data)
+        response.data = json.dumps(data['data'])
         response.mimetype = 'application/json'
     except Exception as e:
         current_app.logger.exception(e)
@@ -23,7 +26,7 @@ def get_biomes():
 def get_biome_by_name(name):
     response = Response(response='OK', status=200)
     try:
-        data = Scrapper().get_biome(name)
+        data = current_app.scrapper_manager.get_biome(name)
         if data:
             response.data = json.dumps(data)
             response.mimetype = 'application/json'

@@ -1,5 +1,4 @@
 import json
-from scrapper import Scrapper
 from flask import Blueprint, Response, current_app
 
 
@@ -10,7 +9,11 @@ bp = Blueprint('outfits', __name__)
 def get_outfits():
     response = Response(response='OK', status=200)
     try:
-        response.data = json.dumps(Scrapper().get_outfits())
+        data = current_app.scrapper_manager.get('outfits')
+        if data is None:
+            data = current_app.scrapper_manager.get_outfits()
+            current_app.scrapper_manager.insert(data)
+        response.data = json.dumps(data['data'])
         response.mimetype = 'application/json'
     except Exception as e:
         current_app.logger.exception(e)
@@ -24,8 +27,11 @@ def get_outfit_by_name(name):
     response = Response(response='OK', status=200)
     try:
         name_exists = False
-        data = Scrapper().get_outfits()
-        for outfit in data:
+        data = current_app.scrapper_manager.get('outfits')
+        if data is None:
+            data = current_app.scrapper_manager.get_outfits()
+            current_app.scrapper_manager.insert(data)
+        for outfit in data['data']:
             if outfit['name'] == name:
                 response.data = json.dumps(outfit)
                 response.mimetype = 'application/json'

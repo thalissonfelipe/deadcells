@@ -1,5 +1,4 @@
 import json
-from scrapper import Scrapper
 from flask import Blueprint, Response, current_app
 
 
@@ -10,7 +9,11 @@ bp = Blueprint('runes', __name__)
 def get_runes():
     response = Response(response='OK', status=200)
     try:
-        response.data = json.dumps(Scrapper().get_runes())
+        data = current_app.scrapper_manager.get('runes')
+        if data is None:
+            data = current_app.scrapper_manager.get_runes()
+            current_app.scrapper_manager.insert(data)
+        response.data = json.dumps(data['data'])
         response.mimetype = 'application/json'
     except Exception as e:
         current_app.logger.exception(e)
@@ -24,8 +27,11 @@ def get_rune_by_name(name):
     response = Response(response='OK', status=200)
     try:
         name_exists = False
-        data = Scrapper().get_runes()
-        for rune in data:
+        data = current_app.scrapper_manager.get('runes')
+        if data is None:
+            data = current_app.scrapper_manager.get_runes()
+            current_app.scrapper_manager.insert(data)
+        for rune in data['data']:
             if rune['name'] == name:
                 response.data = json.dumps(rune)
                 response.mimetype = 'application/json'

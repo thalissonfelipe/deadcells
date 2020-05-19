@@ -1,5 +1,4 @@
 import json
-from scrapper import Scrapper
 from flask import Blueprint, Response, current_app
 
 
@@ -10,7 +9,11 @@ bp = Blueprint('npcs', __name__)
 def get_npcs():
     response = Response(response='OK', status=200)
     try:
-        response.data = json.dumps(Scrapper().get_npcs())
+        data = current_app.scrapper_manager.get('npcs')
+        if data is None:
+            data = current_app.scrapper_manager.get_npcs()
+            current_app.scrapper_manager.insert(data)
+        response.data = json.dumps(data['data'])
         response.mimetype = 'application/json'
     except Exception as e:
         current_app.logger.exception(e)
@@ -24,8 +27,11 @@ def get_npc_by_name(name):
     response = Response(response='OK', status=200)
     try:
         name_exists = False
-        data = Scrapper().get_npcs()
-        for npc in data:
+        data = current_app.scrapper_manager.get('npcs')
+        if data is None:
+            data = current_app.scrapper_manager.get_npcs()
+            current_app.scrapper_manager.insert(data)
+        for npc in data['data']:
             if npc['name'] == name:
                 response.data = json.dumps(npc)
                 response.mimetype = 'application/json'

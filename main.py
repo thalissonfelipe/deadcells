@@ -3,6 +3,7 @@ __author__ = 'Thalisson Sousa'
 
 from flask import Flask
 from flask_cors import CORS
+from scrapper import Scrapper
 
 
 def create_app():
@@ -30,6 +31,8 @@ def create_app():
     app.register_blueprint(enemies_blueprint.bp)
     app.register_blueprint(mutations_blueprint.bp)
     app.register_blueprint(achievements_blueprint.bp)
+
+    app.scrapper_manager = Scrapper()
 
     @app.errorhandler(404)
     def route_not_found(error):

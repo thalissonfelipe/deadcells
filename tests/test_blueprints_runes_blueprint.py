@@ -10,7 +10,7 @@ MOCK_RUNES = [
         'image': 'path_to_image',
         'biome': 'Promenade of the Condemned',
         'location': 'In a room accessed by entering a door' +
-            'found at the base of a large overhang',
+        'found at the base of a large overhang',
         'enemy': 'Undead Archer',
         'ability': 'Ability to sprout vines from special green blobs.',
         'access': [

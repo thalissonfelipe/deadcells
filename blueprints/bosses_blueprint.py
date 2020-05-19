@@ -1,5 +1,4 @@
 import json
-from scrapper import Scrapper
 from flask import Blueprint, Response, current_app
 
 
@@ -10,7 +9,11 @@ bp = Blueprint('bosses', __name__)
 def get_bosses():
     response = Response(response='OK', status=200)
     try:
-        response.data = json.dumps(Scrapper().get_bosses())
+        data = current_app.scrapper_manager.get('bosses')
+        if data is None:
+            data = current_app.scrapper_manager.get_bosses()
+            current_app.scrapper_manager.insert(data)
+        response.data = json.dumps(data['data'])
         response.mimetype = 'application/json'
     except Exception as e:
         current_app.logger.exception(e)
@@ -23,7 +26,7 @@ def get_bosses():
 def get_boss_by_name(name):
     response = Response(response='OK', status=200)
     try:
-        data = Scrapper().get_boss(name)
+        data = current_app.scrapper_manager.get_boss(name)
         if data:
             response.data = json.dumps(data)
             response.mimetype = 'application/json'

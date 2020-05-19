@@ -7,6 +7,17 @@ from bs4 import BeautifulSoup
 class Scrapper:
     def __init__(self):
         self.url = 'https://deadcells.gamepedia.com/'
+        self.data = {}
+
+    def insert(self, data):
+        if data['name'] not in self.data:
+            self.data[data['name']] = {}
+        self.data[data['name']] = data
+
+    def get(self, name):
+        if name not in self.data:
+            return None
+        return self.data[name]
 
     def get_gears(self):
         html = requests.get(self.url + 'Gear')
@@ -50,7 +61,7 @@ class Scrapper:
                     gear['gears'].append(item)
                     data.append(gear)
 
-            return data
+            return {'name': 'gears', 'data': data}
         else:
             raise Exception('Requests Exception')
 
@@ -78,7 +89,7 @@ class Scrapper:
                             value[0] if len(value) == 1 else value
                 data.append(enemy_dict)
 
-            return data
+            return {'name': 'enemies', 'data': data}
         else:
             raise Exception('Requests Exception')
 
@@ -106,7 +117,7 @@ class Scrapper:
                         rune[key] = value[0] if len(value) == 1 else value
                 data.append(rune)
 
-            return data
+            return {'name': 'runes', 'data': data}
         else:
             raise Exception('Requests Exception')
 
@@ -128,7 +139,7 @@ class Scrapper:
                         achievement[key] = td.text.strip()
                 data.append(achievement)
 
-            return data
+            return {'name': 'achievements', 'data': data}
         else:
             raise Exception('Requests Exception')
 
@@ -153,7 +164,7 @@ class Scrapper:
                         outfit[key] = td.text.strip()
                 data.append(outfit)
 
-            return data
+            return {'name': 'outfits', 'data': data}
         else:
             raise Exception('Requests Exception')
 
@@ -186,7 +197,7 @@ class Scrapper:
                     mutation['mutations'].append(item)
                 data.append(mutation)
 
-            return data
+            return {'name': 'mutations', 'data': data}
         else:
             raise Exception('Requests Exception')
 
@@ -242,7 +253,7 @@ class Scrapper:
 
         data = [self.get_biome(biome) for biome in biomes]
 
-        return data
+        return {'name': 'biomes', 'data': data}
 
     def get_boss(self, boss):
         html = requests.get(self.url + boss)
@@ -281,7 +292,7 @@ class Scrapper:
 
         data = [self.get_boss(boss) for boss in bosses]
 
-        return data
+        return {'name': 'bosses', 'data': data}
 
     def get_npcs(self):
         html = requests.get(self.url + 'NPCs')
@@ -300,7 +311,7 @@ class Scrapper:
                         npc[key] = re.sub('\n', ' ', td.text.strip())
                 data.append(npc)
 
-            return data
+            return {'name': 'npcs', 'data': data}
         else:
             raise Exception('Requests Exception')
 
@@ -339,7 +350,7 @@ class Scrapper:
                     pickup['pickups'].append(item)
                 data.append(pickup)
 
-            return data
+            return {'name': 'pickups', 'data': data}
         else:
             raise Exception('Requests Exception')
 

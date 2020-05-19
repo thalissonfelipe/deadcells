@@ -1,5 +1,4 @@
 import json
-from scrapper import Scrapper
 from flask import Blueprint, Response, current_app
 
 
@@ -10,7 +9,11 @@ bp = Blueprint('achievements', __name__)
 def get_achievements():
     response = Response(response='OK', status=200)
     try:
-        response.data = json.dumps(Scrapper().get_achievements())
+        data = current_app.scrapper_manager.get('achievements')
+        if data is None:
+            data = current_app.scrapper_manager.get_achievements()
+            current_app.scrapper_manager.insert(data)
+        response.data = json.dumps(data['data'])
         response.mimetype = 'application/json'
     except Exception as e:
         current_app.logger.exception(e)
@@ -24,8 +27,11 @@ def get_achievement_by_name(name):
     response = Response(response='OK', status=200)
     try:
         name_exists = False
-        data = Scrapper().get_achievements()
-        for achievement in data:
+        data = current_app.scrapper_manager.get('achievements')
+        if data is None:
+            data = current_app.scrapper_manager.get_achievements()
+            current_app.scrapper_manager.insert(data)
+        for achievement in data['data']:
             if achievement['name'] == name:
                 response.data = json.dumps(achievement)
                 response.mimetype = 'application/json'
