@@ -174,7 +174,7 @@ class test_blueprint_get_achievements_by_name(unittest.TestCase):
         )
         mock_current_app.logger.exception = Mock()
 
-        ret = ab.get_achievement_by_name(None)
+        ret = ab.get_achievement_by_name(MOCK_ACHIEVEMENTS['data'][0]['name'])
         mock_current_app.scrapper_manager.get.assert_called()
         mock_current_app.scrapper_manager.get_achievements.assert_called()
         self.assertEqual(ret.status_code, 500)
