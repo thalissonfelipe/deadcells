@@ -13,7 +13,7 @@ Returns a list of json objects with the specified gear type.
 
 `type=[string]`
 
-`types: malee, ranged, shield, skills, grenades, powers`
+`types: malee_weapons, ranged_weapons, shields, traps_and_turrets, grenades, powers, amulets`
 
 ## Request Response
 
@@ -27,7 +27,7 @@ Returns a list of json objects with the specified gear type.
 
 ```json
 {
-    "type": "malee",
+    "type": "malee_weapons",
     "gears": [
         {
             "image": "path_to_image",
@@ -66,7 +66,7 @@ Internal Server Error.
 
 ```javascript
 $.ajax({
-    url: "host:port/gears/type/malee",
+    url: "host:port/gears/type/malee_weapons",
     dataType: "json",
     type : "GET",
     success : function(data) {

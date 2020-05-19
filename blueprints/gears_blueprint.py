@@ -23,7 +23,10 @@ def get_gears():
 def get_gears_by_type(type):
     response = Response(response='OK', status=200)
     try:
-        types = ['malee', 'ranged', 'shield', 'skills', 'grenades', 'powers']
+        types = [
+            'malee_weapons', 'ranged_weapons', 'shields',
+            'traps_and_turrets', 'grenades', 'powers', 'amulets'
+        ]
         if type not in types:
             response.data, response.status_code = 'Invalid gear type.', 400
         else:
@@ -46,6 +49,7 @@ def get_gear_by_name(name):
         for weapon_type in data:
             for gear in weapon_type['gears']:
                 if gear['name'] == name:
+                    gear['type'] = weapon_type['type']
                     response.data = json.dumps(gear)
                     response.mimetype = 'application/json'
                     name_exists = True

@@ -23,7 +23,7 @@ def get_mutations():
 def get_mutations_by_type(type):
     response = Response(response='OK', status=200)
     try:
-        types = ['brutality', 'tatic', 'survival', 'colorless']
+        types = ['brutality', 'tactics', 'survival', 'colorless']
         if type not in types:
             response.data, response.status_code = 'Invalid mutation type.', 400
         else:
@@ -46,6 +46,7 @@ def get_mutation_by_name(name):
         for mutation_type in data:
             for mutation in mutation_type['mutations']:
                 if mutation['name'] == name:
+                    mutation['type'] = mutation_type['type']
                     response.data = json.dumps(mutation)
                     response.mimetype = 'application/json'
                     name_exists = True

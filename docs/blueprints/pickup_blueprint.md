@@ -29,7 +29,8 @@ Returns a json object about a single pickup.
     "image": "path_to_image",
     "description": "A gold tooth worth (value) GOLD.",
     "value_range": "35-65",
-    "sources": "One per enemy parried with the Greed Shield."
+    "sources": "One per enemy parried with the Greed Shield.",
+    "type": "gems"
 }
 ```
 

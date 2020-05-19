@@ -20,28 +20,34 @@ class Scrapper:
                 'location', 'base_dps', 'special_dps', 'scaling'
             ]
             gear_types = [
-                'malee', 'ranged', 'shield', 'skills', 'grenades', 'powers'
+                'malee_weapons', 'ranged_weapons', 'shields',
+                'traps_and_turrets', 'grenades', 'powers', 'amulets'
             ]
+            # remove intermiate table and set amulet type to six position
+            del tables[6]
 
-            for table, gear_type in zip(tables, gear_types):
+            for i, (table, gear_type) in enumerate(zip(tables, gear_types)):
                 gear = {
                     'type': gear_type,
                     'gears': []
                 }
                 for tr in table.find_all('tr')[1:]:
-                    gear['gears'].append({})
+                    item = {}
+                    # amulet case
+                    if i == 6:
+                        keys = ['name', 'image']
                     for td, key in zip(tr.find_all('td'), keys):
                         if key == 'image':
-                            gear['gears'][-1][key] = td.find('img')['src']
+                            item[key] = td.find('img')['src']
                         elif key == 'scaling':
                             value = td.find('img')
                             if value:
-                                gear['gears'][-1][key] = td.find('img')['src']
+                                item[key] = td.find('img')['src']
                             else:
-                                gear['gears'][-1][key] = td.text.strip()
+                                item[key] = td.text.strip()
                         else:
-                            gear['gears'][-1][key] = \
-                                re.sub('\n', ' ', td.text.strip())
+                            item[key] = re.sub('\n', ' ', td.text.strip())
+                    gear['gears'].append(item)
                     data.append(gear)
 
             return data
@@ -162,7 +168,7 @@ class Scrapper:
                 'name', 'image', 'description',
                 'acquisition_method', 'unlock_cost', 'notes'
             ]
-            mutation_types = ['brutality', 'tatic', 'survival', 'colorless']
+            mutation_types = ['brutality', 'tactics', 'survival', 'colorless']
 
             for table, mutation_type in zip(tables, mutation_types):
                 mutation = {
@@ -170,15 +176,14 @@ class Scrapper:
                     'mutations': []
                 }
                 for tr in table.find_all('tr')[1:]:
-                    mutation['mutations'].append({})
+                    item = {}
                     for td, key in zip(tr.find_all('td'), keys):
                         if key == 'image':
-                            mutation['mutations'][-1][key] = \
-                                td.find('img')['src']
+                            item[key] = td.find('img')['src']
                         else:
                             value = td.text.strip().split('\n')
-                            mutation['mutations'][-1][key] = \
-                                value[0] if len(value) == 1 else value
+                            item[key] = value[0] if len(value) == 1 else value
+                    mutation['mutations'].append(item)
                 data.append(mutation)
 
             return data
@@ -310,13 +315,13 @@ class Scrapper:
                 'gems': [
                     'name', 'image', 'description', 'value_range', 'sources'
                 ],
-                'minor_food': ['name', 'image', 'diet'],
-                'major_food': ['name', 'image', 'diet'],
+                'minor_foods': ['name', 'image', 'diet'],
+                'major_foods': ['name', 'image', 'diet'],
                 'scrolls': ['name', 'image', 'effect', 'sources'],
                 'keys': ['name', 'image', 'location', 'description']
             }
             pickup_types = [
-                'gems', 'minor_food', 'major_food', 'scrolls', 'keys'
+                'gems', 'minor_foods', 'major_foods', 'scrolls', 'keys'
             ]
 
             for table, pickup_type in zip(tables, pickup_types):
@@ -325,12 +330,13 @@ class Scrapper:
                     'pickups': []
                 }
                 for tr in table.find_all('tr')[1:]:
-                    pickup['pickups'].append({})
+                    item = {}
                     for td, key in zip(tr.find_all('td'), keys[pickup_type]):
                         if key == 'image':
-                            pickup['pickups'][-1][key] = td.find('img')['src']
+                            item[key] = td.find('img')['src']
                         else:
-                            pickup['pickups'][-1][key] = td.text.strip()
+                            item[key] = td.text.strip()
+                    pickup['pickups'].append(item)
                 data.append(pickup)
 
             return data

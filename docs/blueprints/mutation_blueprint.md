@@ -32,7 +32,8 @@ Returns a json object about a single mutation.
     "unlock_cost": "N/A",
     "notes": [
         "Reduces your skill cooldowns when you kill an enemy with a Melee weapon. Starts at 0.4 seconds and has a cap of 3 seconds at 25+ Brutality."
-    ]
+    ],
+    "type": "brutality"
 }
 ```
 

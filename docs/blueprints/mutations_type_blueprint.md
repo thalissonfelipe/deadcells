@@ -13,7 +13,7 @@ Returns a list of json objects with the specified mutation type.
 
 `type=[string]`
 
-`types: brutality, tatic, survival, colorless`
+`types: brutality, tactics, survival, colorless`
 
 ## Request Response
 

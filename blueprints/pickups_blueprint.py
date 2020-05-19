@@ -23,7 +23,7 @@ def get_pickups():
 def get_pickups_by_type(type):
     response = Response(response='OK', status=200)
     try:
-        types = ['gems', 'minor_food', 'major_food', 'scrolls', 'keys']
+        types = ['gems', 'minor_foods', 'major_foods', 'scrolls', 'keys']
         if type not in types:
             response.data, response.status_code = 'Invalid pickup type.', 400
         else:
@@ -46,6 +46,7 @@ def get_pickup_by_name(name):
         for pickup_type in data:
             for pickup in pickup_type['pickups']:
                 if pickup['name'] == name:
+                    pickup['type'] = pickup_type['type']
                     response.data = json.dumps(pickup)
                     response.mimetype = 'application/json'
                     name_exists = True

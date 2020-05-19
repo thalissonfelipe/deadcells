@@ -13,7 +13,7 @@ Returns a list of json objects with the specified pickup type.
 
 `type=[string]`
 
-`types: gems, minor_food, major_food, scrolls, keys`
+`types: gems, minor_foods, major_foods, scrolls, keys`
 
 ## Request Response
 
