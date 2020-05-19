@@ -32,7 +32,7 @@ def get_pickups_by_type(type):
         else:
             data = current_app.scrapper_manager.get('pickups')
             if data is None:
-                data = current_app.scrapper_manager.pickups()
+                data = current_app.scrapper_manager.get_pickups()
                 current_app.scrapper_manager.insert(data)
             data = data['data'][types.index(type)]
             response.data = json.dumps(data)
