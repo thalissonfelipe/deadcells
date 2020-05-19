@@ -4,107 +4,138 @@ from unittest.mock import patch, Mock
 from blueprints import bosses_blueprint as bb
 
 
-MOCK_BOSSES = [
-    {
-        'name': 'The Concierge',
-        'location(s)': 'Black Bridge',
-        'reward': ['Challenger Rune (1st kill)'],
-    }
-]
+MOCK_BOSSES = {
+    'name': 'bosses',
+    'data': [
+        {
+            'name': 'The Concierge',
+            'location(s)': 'Black Bridge',
+            'reward': ['Challenger Rune (1st kill)'],
+        }
+    ]
+}
 
 
-class test_blueprint_get_bosss(unittest.TestCase):
-
-    @patch(
-        'scrapper.Scrapper.get_bosses',
-        return_value=MOCK_BOSSES
-    )
-    @patch(
-        'json.dumps',
-        return_value=json.dumps(MOCK_BOSSES)
-    )
-    def test_get_bosss_success(
-        self,
-        mock_json,
-        mock_scrapper
-    ):
-        ret = bb.get_bosses()
-        self.assertEqual(ret.status_code, 200)
-        self.assertEqual(ret.data.decode(), json.dumps(MOCK_BOSSES))
-        mock_json.assert_called()
-        mock_scrapper.assert_called()
+class test_blueprint_get_bosses(unittest.TestCase):
 
     @patch(
         'blueprints.bosses_blueprint.current_app',
         return_value=Mock()
     )
+    def test_get_bosses_success(
+        self,
+        mock_current_app
+    ):
+        mock_current_app.scrapper_manager = Mock()
+        mock_current_app.scrapper_manager.get = Mock(return_value=None)
+        mock_current_app.scrapper_manager.get_bosses = Mock(
+            return_value=MOCK_BOSSES
+        )
+        mock_current_app.scrapper_manager.insert = Mock()
+
+        ret = bb.get_bosses()
+        mock_current_app.scrapper_manager.get.assert_called()
+        mock_current_app.scrapper_manager.get_bosses.assert_called()
+        mock_current_app.scrapper_manager.insert.assert_called()
+        self.assertEqual(ret.status_code, 200)
+        self.assertEqual(ret.data.decode(), json.dumps(MOCK_BOSSES['data']))
+    
     @patch(
-        'scrapper.Scrapper.get_bosses',
-        side_effect=Exception('Exception')
+        'blueprints.bosses_blueprint.current_app',
+        return_value=Mock()
+    )
+    def test_get_bosses_success_from_memory(
+        self,
+        mock_current_app
+    ):
+        mock_current_app.scrapper_manager = Mock()
+        mock_current_app.scrapper_manager.get = Mock(
+            return_value=MOCK_BOSSES
+        )
+
+        ret = bb.get_bosses()
+        mock_current_app.scrapper_manager.get.assert_called()
+        self.assertEqual(ret.status_code, 200)
+        self.assertEqual(ret.data.decode(), json.dumps(MOCK_BOSSES['data']))
+
+    @patch(
+        'blueprints.bosses_blueprint.current_app',
+        return_value=Mock()
     )
     def test_get_bosses_internal_error(
         self,
-        mock_scrapper,
         mock_current_app
     ):
+        mock_current_app.scrapper_manager = Mock()
+        mock_current_app.scrapper_manager.get = Mock(return_value=None)
+        mock_current_app.scrapper_manager.get_bosses = Mock(
+            side_effect=Exception()
+        )
         mock_current_app.logger.exception = Mock()
+
         ret = bb.get_bosses()
+        mock_current_app.scrapper_manager.get.assert_called()
+        mock_current_app.scrapper_manager.get_bosses.assert_called()
+        mock_current_app.logger.exception.assert_called()
         self.assertEqual(ret.status_code, 500)
         self.assertEqual(ret.data.decode(), 'Internal Server Error.')
-        mock_scrapper.assert_called()
-        mock_current_app.logger.exception.assert_called()
 
 
 class test_blueprint_get_boss_by_name(unittest.TestCase):
 
     @patch(
-        'json.dumps',
-        return_value=json.dumps(MOCK_BOSSES[0])
-    )
-    @patch(
-        'scrapper.Scrapper.get_boss',
-        return_value=MOCK_BOSSES[0]
+        'blueprints.bosses_blueprint.current_app',
+        return_value=Mock()
     )
     def test_get_boss_by_name_success(
         self,
-        mock_scrapper,
-        mock_json,
+        mock_current_app
     ):
-        ret = bb.get_boss_by_name(MOCK_BOSSES[0]['name'])
-        self.assertEqual(ret.status_code, 200)
-        self.assertEqual(ret.data.decode(), json.dumps(MOCK_BOSSES[0]))
-        mock_scrapper.assert_called()
-        mock_json.assert_called()
+        mock_current_app.scrapper_manager = Mock()
+        mock_current_app.scrapper_manager.get_boss = Mock(
+            return_value=MOCK_BOSSES['data'][0]
+        )
 
-    @patch(
-        'scrapper.Scrapper.get_boss',
-        return_value=None
-    )
-    def test_get_boss_by_name_not_found(
-        self,
-        mock_scrapper
-    ):
-        ret = bb.get_boss_by_name(None)
-        self.assertEqual(ret.status_code, 404)
-        self.assertEqual(ret.data.decode(), 'Boss not found.')
-        mock_scrapper.assert_called()
+        ret = bb.get_boss_by_name(MOCK_BOSSES['data'][0]['name'])
+        mock_current_app.scrapper_manager.get_boss.assert_called()
+        self.assertEqual(ret.status_code, 200)
+        self.assertEqual(
+            ret.data.decode(),
+            json.dumps(MOCK_BOSSES['data'][0])
+        )
 
     @patch(
         'blueprints.bosses_blueprint.current_app',
         return_value=Mock()
     )
+    def test_get_boss_by_name_not_found(
+        self,
+        mock_current_app
+    ):
+        mock_current_app.scrapper_manager = Mock()
+        mock_current_app.scrapper_manager.get_boss = Mock(return_value=None)
+
+        ret = bb.get_boss_by_name(None)
+        mock_current_app.scrapper_manager.get_boss.assert_called()
+        self.assertEqual(ret.status_code, 404)
+        self.assertEqual(ret.data.decode(), 'Boss not found.')
+
     @patch(
-        'scrapper.Scrapper.get_boss',
-        side_effect=Exception('Exception')
+        'blueprints.bosses_blueprint.current_app',
+        return_value=Mock()
     )
     def test_get_boss_by_name_internal_error(
         self,
-        mock_scrapper,
         mock_current_app
     ):
+        mock_current_app.scrapper_manager = Mock()
+        mock_current_app.scrapper_manager.get_boss = Mock(
+            side_effect=Exception()
+        )
         mock_current_app.logger.exception = Mock()
+
         ret = bb.get_boss_by_name(None)
+        mock_current_app.scrapper_manager.get_boss.assert_called()
+        mock_current_app.logger.exception.assert_called()
         self.assertEqual(ret.status_code, 500)
         self.assertEqual(ret.data.decode(), 'Internal Server Error.')
-        mock_scrapper.assert_called()
-        mock_current_app.logger.exception.assert_called()
